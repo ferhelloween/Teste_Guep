@@ -1,0 +1,120 @@
+<? 
+	//Criando a classe de votação 
+	class Votacao   {  
+		
+		private $id; //ID da votação
+		private $nome; //Nome de quem receberá o voto 
+		private $matricula; //Matricula de quem receberá o voto 
+		private $funcao; //Função de quem receberá o voto 
+		private $ramal; //Ramal de quem receberá o voto 
+		private $nota; //Nota de quem recebeu o voto 
+		private $motivo; //Motivo da votação 
+		
+		//Cria a função construtora 
+		public function __construct() { 
+
+			$this->id = $id; 	
+			$this->nome = $nome; 	
+			$this->matricula = $matricula; 	
+			$this->funcao = $funcao; 	
+			$this->ramal = $ramal; 	
+			$this->nota = $nota; 	
+			$this->motivo = $motivo; 	
+
+		}
+	
+
+		
+		//Criando os métodos SETTERS 
+		
+		
+		//ID
+		public function setId($id) { 
+			$this->id = $id;
+		} 
+
+		
+		//Nome
+		public function setNome($nome) { 
+			$this->nome = $nome; 
+		} 	
+
+		//Matricula
+		public function setMatricula($matricula) { 
+			$this->matricula = $matricula;
+		} 
+		
+		
+		//Funcao
+		public function setFuncao($funcao) { 
+			$this->funcao = $funcao;
+		} 
+		
+		//Ramal
+		public function setRamal($ramal) { 
+			$this->ramal = $ramal; 
+		} 
+	
+	
+		//Nota 
+		public function setNota($nota) {  
+			$this->nota = $nota; 
+		} 
+		
+		//Motivo 
+		public function setMotivo($motivo) { 
+			$this->motivo = $motivo;
+		} 
+
+		
+		//Funções GETTERS 
+		
+		//ID 
+		public function getId() { 
+			return $this->id;
+		} 
+		
+		//Nome 
+		public function getNome() { 
+			return $this->nome; 
+		} 
+		
+		//Matricula 
+		public function getMatricula() { 
+			return $this->matricula; 
+		} 
+		
+		//Função 
+		public function getFuncao() { 
+			return $this->funcao; 
+		} 
+		
+		//Ramal  
+		public function getRamal() { 
+			return $this->ramal; 
+		} 
+
+		//Nota 
+		public function getNota() { 
+			return $this->nota; 
+		} 
+		
+		//Motivo 
+		public function getMotivo() { 
+			return $this->motivo; 
+		} 
+		
+		
+		//Funções de Criar, Atualizar, Deletar e Listar contatos
+		
+		
+		
+		
+		
+		
+		
+		
+	} 
+
+
+?>

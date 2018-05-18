@@ -1,0 +1,174 @@
+/*Criação dos estilos próprios*/ 
+			
+		
+	/*Criando o topo da página */
+	/*Topo*/
+	.topo { 
+		height: 8%
+	} 
+		
+	.topo .topNav { 
+		background-color: #A9A9A9;
+		overflow: hidden;
+
+	} 	
+	
+	.topo .topNav a { 
+		float: left; 
+	    color: #F1F1F1;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+		font-size: 17px;
+	} 
+	
+	.topNav .fig1 img { 
+		float: left; 
+	}
+	
+	.topNav p { 
+		float: left; 
+		color: #8B0000;	
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+		font-size: 17px;
+	}
+	
+	.topNav .fig2 img { 
+		float: right;
+	} 
+	
+	
+	
+		/* Change the color of links on hover */
+	.topo .topNav a:hover {
+		background-color: #8B0000; 
+		height: 60px;
+		color: #F1F1F1;
+	}
+
+	/* Add a color to the active/current link */
+	.topo .topNav a.active {
+    background-color: #4CAF50;
+    color: white;
+	}
+
+
+	
+		
+	/*Corpo da Página*/ 	
+	.corpo { 
+		width: 92%; 
+		float: left;
+	}
+	
+	
+	#meuMenuLateral a { 
+		position: absolute; 
+		left: -210px; 
+		transition: 0.3s; 
+		padding: 15px; 
+		width: 250px; 
+		text-decoration: none; 
+		font-size: 20px; 
+		color: white; 
+		border-radius: 0 5px 5px 0; 
+	} 
+	
+	#meuMenuLateral a:hover { 
+		left: 0; 
+	} 
+	
+	#avaliar { 	
+		top: 80px; 
+		background-color: #A9A9A9;
+	} 
+	
+	#visualizar { 
+		top: 150px; 
+		background-color: #A9A9A9;
+	} 
+	
+
+	/*Tooltip*/ 
+	.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+	}
+
+	.tooltip .tooltiptext {
+		visibility: hidden;
+		width: 120px;
+		background-color: #555;
+		color: #fff;
+		text-align: center;
+		border-radius: 6px;
+		padding: 5px 0;
+		position: absolute;
+		z-index: 1;
+		bottom: 125%;
+		left: 50%;
+		margin-left: -60px;
+		opacity: 0;
+		transition: opacity 0.3s;
+	}
+
+	.tooltip .tooltiptext::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -5px;
+		border-width: 5px;
+		border-style: solid;
+		border-color: #555 transparent transparent transparent;
+	}
+
+	.tooltip:hover .tooltiptext {
+		visibility: visible;
+		opacity: 1;
+	}	
+	
+	
+	/*Corpo*/
+	.corpo { 
+		width: 92%; 
+		float: left;
+	}
+	
+	
+	
+	
+	/*RodaPé da Página*/ 
+	/*RODAPÉ*/ 
+	.rodape { 
+		position: absolute; 
+		bottom: 0; 
+		background-color: #898989;
+		width: 100%;
+		
+	} 
+
+	.rodape p { 
+		color: #F1F1F1; 
+		font-size: 15px; 
+		text-align: center; 
+		margin: 0 0 0 0; 
+		padding: 0 0 0 0;	
+	} 
+
+	.rodape span#timepage { 
+		color: #F1F1F1; 
+		font-size: 15px; 
+		text-align: center; 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
