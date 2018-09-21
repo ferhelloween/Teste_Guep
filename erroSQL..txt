@@ -1,0 +1,20 @@
+SELECT  COUNT(CASE WHEN(
+		SUM(CASE
+			WHEN LEN([TEMPO INDISPONÍVEL]) = 8 AND [INICIO] BETWEEN '2018-08-01' AND '2018-08-31 23:59:59'
+	     			 THEN (SUBSTRING([TEMPO INDISPONÍVEL], 1, 2) * 3600) 
+			  	+ (SUBSTRING([TEMPO INDISPONÍVEL], 4, 2) * 60) + (SUBSTRING([TEMPO INDISPONÍVEL], 7, 2)) 
+
+          	        WHEN LEN([TEMPO INDISPONÍVEL]) = 9 AND [INICIO] BETWEEN '2018-08-01' AND '2018-08-31 23:59:59' 
+				THEN (SUBSTRING([TEMPO INDISPONÍVEL], 1, 3) * 3600) 
+				+ (SUBSTRING([TEMPO INDISPONÍVEL], 5, 2) * 60) + (SUBSTRING([TEMPO INDISPONÍVEL], 8, 2)) 
+			END)) < 366959808  THEN 1 ELSE NULL END) AS Total_Indisponibildiade_Inferior
+	 FROM [REPORT].[dbo].[report_sirea]
+   WHERE
+   [OPERADORA] = 'ALP' AND [GRUPO] = 'OPERADORA' 
+
+
+Msg 130, Level 15, State 1, Line 3
+Cannot perform an aggregate function on an expression containing an aggregate or a subquery.
+ 
+
+							
