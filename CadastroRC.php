@@ -74,23 +74,73 @@
 				//Chama o auto complete do Jquery 
 				$('#Contrato').autocomplete({source: num_contrato, minLength: 3	});
 			});
+
+			 $("#Contrato").blur(function(){
+      			 $("#dadosContratoID").val($('#Contrato').val());
+      			 var teste = ""
+    		});
+
 		});	
 
 	</script>
+
+	
+					
+
+
+	<? 
+		$contrato = (isset($_REQUEST['Contrato'])) ? $_REQUEST['Contrato']: '';
+	?>
+
+
 </head>
 <body>
 		<br>
 		
-		<form> 
+		
 		  <fieldset class="borda-form">
 		  	 <legend  class="borda-form" style="color: #066fa8; margin-left: 50px;">Registrar informativo de RC</legend>
+		  	<form name="bcContrato" method="POST"> 
+
 		  	<div class="form-inline">
 		  			<div class="form-group" style="margin-left: 50px;"> 
 						<!--Contrato -->
-						<label for="Contrato">Contrato:</label>
-						<input type="text" class="form-control"	style="width: 200px;" name="Contrato" id="Contrato" required/>
-					</div>
+						<label for="Contrato">Digite o Contrato:</label>
+						<!--Implantar Contrato por Busca______Mudar a Lógica do Negócio-->
+						<select class="form-control" style="width: 300px" name="Contrato" id="Contrato" required>  
+							<option value="">Selecione...</option>
+							<? 
+								//Cria a busca de Contrato para preencher o Option 
+								$preencheSelect = "
+									SELECT [num_contrato],[operadora] FROM [REPORT].[dbo].[report_contratos] 
+									WHERE [gestora_contrato] <> 'ENCERRADO'
+									ORDER BY [operadora],[num_contrato]
+								";
 
+								//Formata o resultado para aparecer no Option 
+								$resSelect = $sql->prepare($preencheSelect); //Prepara a consulta 
+								$resSelect->execute(); //Executa a consulta 
+									//Exibe o resultado 
+									foreach ($resSelect as $campos) {
+										$op_num_contrato = $campos['num_contrato']; 
+										$op_operadora = $campos['operadora']; 
+									  echo "<option value= '$op_num_contrato'>$op_num_contrato - $op_operadora</option>";		
+									}
+							?>	
+
+						</select>
+
+						<!--<input type="text" class="form-control"	value="<?=$contrato;?>"style="width: 150px;" name="Contrato" id="Contrato" required/>
+						-->
+
+
+						<input type="hidden" name="dadosContrato" id="dadosContrato"/> 
+						<button type="submit" value="Trazer_Dados" name="DadosCadastro" class="btn btn-warning" style="margin-left: 25px;">Buscar Contrato</button>
+			
+
+					</div>
+			</div>		
+			<br>
 				<!--	<script type="text/javascript">
 					//Cria a função que buscará o autocomplete 
 					$(document).ready(function() {	
@@ -111,41 +161,121 @@
 
 
 					</script>	-->
+			<? 
+				$acao = (isset($_REQUEST['DadosCadastro'])) ? $_REQUEST['DadosCadastro']: ''; 
+					if ($acao == "Trazer_Dados") {
+						$resAcao = ""; 
+						$resAcao = $_REQUEST['Contrato'];
+
+						//Realiza a consulta que irá preencher os demais dados 
+						$consultaDados = "
+						SELECT [num_contrato],[operadora],[gestora_contrato],[data_fechamento]
+   						,[gitec_abrangidas]
+ 						FROM [REPORT].[dbo].[report_contratos] WHERE [num_contrato] = '$resAcao'
+						";
+
+						//echo $consultaDados;
+
+						$resultContrato = $sql->prepare($consultaDados); 
+						$resultContrato->execute();
+
+							foreach ($resultContrato as $contratoEspecifico) {
+								$num_contrato = $contratoEspecifico['num_contrato'];
+								$operadora = $contratoEspecifico['operadora']; //Operadora do Cotnrato
+								$gestora_contrato = $contratoEspecifico['gestora_contrato']; //Gestora do Contrato
+								$data_fechamento = $contratoEspecifico['data_fechamento']; //Data de Fechamento da Fatura
+								$gitec_abrangidas = $contratoEspecifico['gitec_abrangidas']; //Lista de GITEC´s Abrangidas
+							}
+
+					} else { 
+						$num_contrato = null;
+						$operadora = null; 
+						$gestora_contrato = null; 
+						$data_fechamento = null; 
+						$gitec_abrangidas = null;
+
+					}
+
+
+			?> 		
+
+
+			<div class="form-inline">
+
 					<div class="form-group" style="margin-left: 50px;"> 
+						<!--Mes de Vigência -->
+						<label for="Contrato">Número do Contrato:</label>
+						<input type="text" class="form-control" style="width: 200px;" name="Contrato" id="Contrato" value="<?=$num_contrato;?>" disabled="disabled" />
+					</div>
+
+					<div class="form-group" style="margin-left: 10px;"> 
 						<!--Mes de Vigência -->
 						<label for="Operadora">Operadora:</label>
-						<input type="text" class="form-control" style="width: 200px;" name="Operadora" id="Operadora" disabled="disabled" />
+						<input type="text" class="form-control" style="width: 300px;" name="Operadora" id="Operadora" value="<?=$operadora;?>" disabled="disabled" />
 					</div>
 
-					<div class="form-group" style="margin-left: 50px;"> 
+					<div class="form-group" style="margin-left: 10px;"> 
 						<!--Mes de Vigência -->
 						<label for="Gestora">Gestora Operacional:</label>
-						<input type="text" class="form-control" style="width: 200px;" name="Gestora" id="Gestora" disabled="disabled"/>
+						<input type="text" class="form-control" style="width: 150px;" name="Gestora" id="Gestora" value="<?=$gestora_contrato;?>" disabled="disabled"/>
 					</div>
-			  </div>
-		 	 
+			 
+		 	 </div>
 		 	 <!--<script type="text/javascript" src="completar.js"></script>-->	
-
-		  	  <br>
-
-		  	<div class="form-inline">
+		 	 <br>
+	         <div class="form-inline">
+		    
 		  			<div class="form-group" style="margin-left: 50px;"> 
 						<!--Contrato -->
 						<label for="Fechamento">Data de Fechamento da Fatura:</label>
-						<input type="text" class="form-control" style="width: 200px;" name="Fechamento" id="Fechamento" required/>
+						<input type="text" class="form-control" style="width: 200px;" name="Fechamento" id="Fechamento" value="<?=$data_fechamento;?>" disabled="disabled"/>
 					</div>
 
-					<div class="form-group" style="margin-left: 50px;"> 
+					<div class="form-group" style="margin-left: 10px;"> 
 						<!--Contrato -->
-						<label for="Unidades">Unidades abrangidas:</label>
-						<input type="text" class="form-control" style="width: 200px;" name="Unidadaes" id="Unidades" required/>
+						<label for="Unidades">Unidade abrangida:</label>
+						<select class="form-control" style="width: 300px" name="Unidades" id="Unidades" required>  
+							<option value="Teste">Selecione...</option>
+							<? 
+								//Divide o resultado da variavel Explode
+								$str = explode('; ', $gitec_abrangidas);
+								$total = count($str); 
+								 for ($i=0; $i < $total ; $i++) { 
+	 							 	echo "<option value='$str[$i]'>$str[$i]</option>";
+	 							  } 
+								
+							?> 
+						</select>
+						<script type="text/javascript">
+								$(document).ready( function ()
+									{
+										$("#Unidades").on('change', function() {
+											var option = $(this).find('option:selected').val();
+												 $('#res').html(option);
+											var res = document.getElementById('res').value = option;	 
+											});
+									});
+
+						</script>
+							 <input type='hidden' id='res' name='resGitec'>
 					</div>
+			     </div>	
 
-
-	        </div>	
-          
+          </form>
           	<br>
+
+          <form name="RegistraRC" method="POST" action="../STRUTS/gerencia_rcs.php">
           
+			<input type="hidden" name="rcNumContrato" value="<?=$num_contrato;?>" /> 	
+          	<input type="hidden" name="rcOperadora" value="<?=$operadora;?>" />
+          	<input type="hidden" name="rcGestora" value="<?=$gestora_contrato;?>" />
+          	<input type="hidden" name="rcFechamento" value="<?=$data_fechamento;?>" />
+          	<!--<input type="hidden" name="rcUnidade" value="<?=$resultadoGitec;?>" />--> 
+          	<? 
+          		echo $resultadoGitec;
+          	?>
+          
+
           <div class="form-inline">
 				<div class="form-group" style="margin-left: 50px;"> 
 					<!--Contrato -->
@@ -157,50 +287,71 @@
 					<!--Contrato -->
 					<label for="Atraso">Dias em Atraso:</label>
 					<input type="text" class="form-control" style="width: 100px;" name="Atraso" id="Atraso" required/>
-				</div>	
-          </div>	
-          <br>
-           <div class="form-inline">	
-           		<div class="form-group" style="margin-left: 50px;"> 
+				</div>
+
+				<div class="form-group" style="margin-left: 50px;"> 
 					<!--Contrato -->
 					<label for="ValorGlobal">Valor Global Mensal:</label>
 					<input type="text" class="form-control" style="width: 100px;" name="ValorGlobal" id="ValorGlobal" required/>
 				</div>
 
+          </div>	
+          <br>
+           <div class="form-inline">	
+           		
+
 				<div class="form-group" style="margin-left: 50px;"> 
 					<!--Contrato -->
 					<label for="Multa">Multa:</label>
-					<input type="text" class="form-control" style="width: 100px;" name="Multa" id="Multa" required/>
+					<input type="text" class="form-control somente-numero" style="width: 100px;" name="Multa" id="Multa" pattern="/[^0-9\.]/" required/>
 				</div>
 
 				<div class="form-group" style="margin-left: 50px;"> 
 					<!--Contrato -->
 					<label for="Glosa">Glosa:</label>
-					<input type="text" class="form-control" style="width: 100px;" name="Glosa" id="Glosa" required/>
+					<input type="text" class="form-control somente-numero" style="width: 100px;" name="Glosa" id="Glosa" pattern="/[^0-9\.]/" required/>
 				</div>
+
+				<script type="text/javascript">
+					$(document).ready(function() {
+ 						  $('.somente-numero').blur(function (e) {
+							$(this).val($(this).val().replace(/[^0-9\.]/g,''));
+							  var v1 = Number(document.getElementById("Multa").value);
+      						    var v2 = Number(document.getElementById("Glosa").value);
+      				      if ((v1 !="")&&(v2 !="")) {
+        				      var v3 = document.getElementById("Total").value = parseFloat(v1 + v2).toFixed(2);
+	        				    }
+	 					  });
+					 });
+
+
+				</script>
+
+
 
 				<div class="form-group" style="margin-left: 50px;"> 
 					<!--Contrato -->
 					<label for="Total">Total(Multa+Glosa):</label>
-					<input type="text" class="form-control" style="width: 100px;" name="Total" id="Total" required/>
+					<input type="text" class="form-control" style="width: 100px;" name="Total" id="Total" disabled="disabled" />
 				</div>
 
 	        </div>
 	        <br>
-	        <div class="form-inline pull-right">
-		        <div class="form-group" > 
-	        		<button type="submit" class="btn btn-primary btn-md" name="btnPesquisar" id="gerarPesquisa"> 
+	        <div class="form-inline pull-right" >
+		        <div class="form-group" style="margin-right: 35px;" > 
+	        		<button type="submit" class="btn btn-primary btn-lg" name="btnPesquisar" id="gerarPesquisa"> 
 						Registrar 
 					</button>	
 				</div>	
-				<div class="form-group" style="margin-left: 50px;"> 	
-					<button type="reset" class="btn btn-primary btn-md" name="btnPesquisar" id="gerarPesquisa"> 
+				<div class="form-group" style="margin-right: 75px;"> 	
+					<button type="reset" class="btn btn-primary btn-lg" name="btnPesquisar" id="gerarPesquisa"> 
 						Limpar 
 					</button>	
 				</div>	
 	        </div>
+	  	</form>
 	    </fieldset>    
-		</form>
+		
 
 
 
